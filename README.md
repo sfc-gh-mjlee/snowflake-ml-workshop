@@ -262,26 +262,42 @@ SELECT * FROM TABLE(MODEL_MONITOR_DRIFT_METRIC('DEMO.ML_DEMO.LTV_MODEL_MONITOR',
 
 ---
 
-## Module 8: ML Lineage & Governance
+## Snowflake ML 주요 기능 요약
 
-**유형**: 이론+실습 | **시간**: 30분
+### 데이터 & 피처
 
-### 학습 목표
-- ML Lineage로 데이터~모델 계보 추적
-- Snowflake 거버넌스(RBAC, 태그, 마스킹)의 ML 적용
+| 기능 | 설명 |
+|------|------|
+| **Snowpark DataFrame** | Python에서 SQL Pushdown으로 대규모 데이터 처리. 데이터가 Snowflake를 떠나지 않음 |
+| **Feature Store** | 피처 중앙 관리. Entity/Feature View 기반으로 팀 간 재사용, Managed Feature View는 Dynamic Table로 자동 갱신 |
+| **Datasets** | 학습 데이터의 불변 스냅샷 저장 → 모델 재현성 보장 |
 
-### Lineage 계층
+### 모델 개발 & 학습
 
-```
-Source Tables (TPCH_SF1) → Feature Views → Datasets → Models → Services
-```
+| 기능 | 설명 |
+|------|------|
+| **Notebooks (Container Runtime)** | 브라우저 기반 Jupyter 환경. CPU/GPU 선택 가능, 패키지 사전 설치됨 |
+| **ML Modeling API** | sklearn 호환 API (`XGBRegressor`, `RandomForestRegressor` 등)이지만 Warehouse에서 실행 |
+| **Experiment Tracking** | 파라미터·메트릭·아티팩트 로깅. Snowsight UI에서 실험 비교 |
+| **ML Jobs (`@remote`)** | 로컬/Notebook 함수를 Compute Pool(CPU/GPU)에서 실행. 멀티노드 분산 학습 지원 |
 
-```sql
--- 모델의 업스트림 계보 조회
-SELECT * FROM TABLE(DEMO.ML_DEMO.GET_LINEAGE(
-    'MODEL', 'DEMO.ML_DEMO.CUSTOMER_LTV_PREDICTOR/V1', 'UPSTREAM', TRUE
-));
-```
+### 모델 관리 & 배포
+
+| 기능 | 설명 |
+|------|------|
+| **Model Registry** | 모델 버전 관리, Champion/Challenger 태그, RBAC 거버넌스 자동 적용 |
+| **Batch Inference (`mv.run()`)** | Warehouse에서 SQL 기반 대량 예측. 별도 인프라 불필요 |
+| **Dynamic Table Inference** | 원본 데이터 변경 시 예측 결과 자동 갱신 |
+| **SPCS Real-time** | 모델을 컨테이너 서비스로 배포. REST 엔드포인트 자동 생성, 밀리초 응답 |
+
+### 운영 & 자동화
+
+| 기능 | 설명 |
+|------|------|
+| **Task Graph (DAG)** | Snowflake 네이티브 파이프라인 오케스트레이션. 스케줄링 + 의존성 관리 |
+| **Model Monitor** | `CREATE MODEL MONITOR` SQL DDL로 생성. 성능/드리프트 지표 자동 계산 |
+| **ML Lineage** | 소스 테이블 → 피처 → 모델 → 서비스까지 계보 자동 추적 (`GET_LINEAGE()`) |
+| **Snowflake Alerts** | 임계값 기반 자동 알림 (이메일, Slack 등) |
 
 ---
 
