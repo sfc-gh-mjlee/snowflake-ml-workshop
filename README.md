@@ -228,7 +228,6 @@ DAGOperation(schema).deploy(dag, mode=CreateMode.or_replace)
 ### 학습 목표
 - 프로덕션 모델 성능 저하 원인(데이터 드리프트, 컨셉 드리프트) 이해
 - Model Monitor 설정 및 드리프트 감지
-- SHAP 기반 모델 설명 가능성(Explainability)
 
 ### Model Monitor (SQL DDL)
 
@@ -260,11 +259,6 @@ SELECT * FROM TABLE(MODEL_MONITOR_DRIFT_METRIC('DEMO.ML_DEMO.LTV_MODEL_MONITOR',
 | < 0.10 | 안정 | 현 모델 유지 |
 | 0.10 ~ 0.20 | 주의 | 원인 분석 필요 |
 | >= 0.20 | 위험 | 재학습 강력 권고 |
-
-### SHAP Explainability
-
-> `explain()` 함수는 단일 추정기 모델에만 자동 등록됩니다.  
-> Pipeline 모델은 `shap.TreeExplainer`를 별도로 사용합니다.
 
 ---
 
