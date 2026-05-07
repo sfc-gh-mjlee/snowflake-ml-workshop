@@ -291,36 +291,6 @@ SELECT * FROM TABLE(DEMO.ML_DEMO.GET_LINEAGE(
 
 ---
 
-## Module 9: Snowflake ML Functions
-
-**유형**: 실습 | **시간**: 30분
-
-### 학습 목표
-- SQL만으로 ML 기능을 사용할 수 있는 Cortex ML Functions 이해
-- Python ML과 ML Functions의 차이 구분
-
-### ML Functions vs. Python ML
-
-| 항목 | Python ML (Module 4) | ML Functions (SQL) |
-|------|---------------------|-------------------|
-| 주 사용자 | 데이터 과학자 | SQL 사용자 |
-| 필요 지식 | Python + ML | SQL만 |
-| 유연성 | 매우 높음 | 정해진 알고리즘 |
-| 적합 사례 | 커스텀 복잡 모델 | 표준 패턴 (예측, 이상치) |
-
-```sql
--- 시계열 예측
-CREATE OR REPLACE SNOWFLAKE.ML.FORECAST order_forecast(
-    INPUT_DATA => SYSTEM$REFERENCE('TABLE', 'DEMO.ML_DEMO.MONTHLY_ORDER_STATS'),
-    SERIES_COLNAME => 'SEGMENT',
-    TIMESTAMP_COLNAME => 'ORDER_MONTH',
-    TARGET_COLNAME => 'TOTAL_REVENUE'
-);
-CALL order_forecast!FORECAST(FORECASTING_PERIODS => 30);
-```
-
----
-
 ## 자주 묻는 질문 (FAQ)
 
 **Q. PyTorch, TensorFlow 같은 딥러닝도 Snowflake에서 할 수 있나요?**  
