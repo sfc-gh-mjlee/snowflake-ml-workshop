@@ -262,6 +262,22 @@ SELECT * FROM TABLE(MODEL_MONITOR_DRIFT_METRIC('DEMO.ML_DEMO.LTV_MODEL_MONITOR',
 
 ---
 
+## Snowsight UI 탐색 가이드
+
+각 모듈 실습 후 Snowsight에서 결과를 직접 확인할 수 있습니다.
+
+| 탐색 경로 | 확인 내용 | 관련 모듈 |
+|-----------|-----------|-----------|
+| **AI & ML → Features** | Feature View 목록, 엔티티별 정리, 컬럼 상세, Lineage | Module 3 |
+| **AI & ML → Experiments** | 실험 Run 목록, 파라미터/메트릭 비교 차트 | Module 4 |
+| **AI & ML → Models** | 등록된 모델 목록, 버전별 메트릭, 호출 코드 스니펫 | Module 4, 5 |
+| **AI & ML → Models → (모델 선택) → Lineage** | 소스 테이블 → 피처 → 모델 데이터 흐름 | Module 4 |
+| **AI & ML → Models → (모델 선택) → Inference Services** | SPCS 배포 상태, REST 엔드포인트 | Module 5 |
+| **AI & ML → Models → (모델 선택) → Monitors** | 성능/드리프트 메트릭 대시보드, 버전 비교 | Module 7 |
+| **Monitoring → Task History** | DAG 실행 이력, 성공/실패 상태, 의존성 그래프 | Module 6 |
+
+---
+
 ## Snowflake ML 주요 기능 요약
 
 ### 데이터 & 피처
