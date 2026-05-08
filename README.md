@@ -2,7 +2,8 @@
 
 **데모 시나리오**: TPC-H 고객 생애 가치 예측 (LTV Prediction)  
 **대상 환경**: krdemo (wf00579.ap-northeast-2.aws)  
-**총 교육 시간**: 약 6시간
+**총 교육 시간**: 약 6시간  
+**그래프 언어**: 영문 (한글 폰트 의존성 없음)
 
 ---
 
@@ -183,6 +184,8 @@ mv = reg.log_model(model, model_name="CUSTOMER_LTV_PREDICTOR",
 | Large-scale Batch | `mv.run_batch()` | 분~시간 | 수백만 건 처리 |
 | Real-time (SPCS) | `mv.create_service()` | 밀리초 | 이벤트 기반 즉시 응답 |
 
+> 노트북은 반복 실행을 고려하여, `create_service()` 전에 기존 서비스를 삭제하도록 구현되어 있습니다.
+
 ```python
 mv = reg.get_model("CUSTOMER_LTV_PREDICTOR").version("V1")
 predictions = mv.run(customer_df, function_name="predict")
@@ -247,6 +250,23 @@ DAGOperation(schema).deploy(dag, mode=CreateMode.or_replace)
 ### 학습 목표
 - 프로덕션 모델 성능 저하 원인(데이터 드리프트, 컨셉 드리프트) 이해
 - Model Monitor 설정 및 드리프트 감지
+- Precision/F1 기반 재학습 트리거 로직
+
+### 모니터링 지표
+
+| 지표 | 용도 |
+|------|------|
+| Precision / Recall / F1 | 모델 정확도 추적 |
+| PSI (Population Stability Index) | 피처 분포 변화 감지 |
+
+### 재학습 트리거 기준
+
+| 조건 | 임계값 |
+|------|--------|
+| Precision < 0.80 | 재학습 |
+| F1 Score < 0.80 | 재학습 |
+| HIGH DRIFT 피처 >= 2개 | 재학습 |
+| 최대 PSI > 0.30 | 재학습 |
 
 ### Model Monitor (SQL DDL)
 
@@ -355,6 +375,14 @@ A. ML Functions(FORECAST, ANOMALY_DETECTION)는 테이블 데이터 ML, Cortex A
 
 **Q. 이미 Airflow로 운영 중인데 Task Graph가 필요한가요?**  
 A. 기존 Airflow에서 ML Jobs를 호출하는 방식으로 통합 가능합니다. 새로 구축한다면 Task Graph가 네이티브 옵션입니다.
+
+---
+
+## 노트북 실행 참고사항
+
+- **반복 실행 가능**: 모든 노트북은 `overwrite=True` 또는 기존 객체 삭제 후 재생성 패턴으로 구현되어 있어 여러 번 실행해도 에러 없음
+- **한글 폰트 불필요**: 그래프 텍스트는 모두 영문으로 작성. Container Runtime에 폰트 설치 불필요
+- **Spine DataFrame 미사용**: 시간 분리를 코드에서 직접 처리 (WHERE 조건). Feature Store의 Point-in-Time(ASOF JOIN)은 이 데모에서 사용하지 않음
 
 ---
 
