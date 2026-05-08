@@ -132,7 +132,7 @@ fs.register_feature_view(feature_view=fv, version="1")
 
 ---
 
-## Module 4: 모델 학습, 실험 추적 및 Model Registry
+## Module 4: 모델 학습, Experiment Tracking 및 Model Registry
 
 **유형**: 실습 | **시간**: 90분 | **노트북**: `04_model_training_and_registry.ipynb`
 
