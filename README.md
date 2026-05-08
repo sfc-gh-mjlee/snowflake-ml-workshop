@@ -115,7 +115,7 @@ pipeline.fit(train_df)  # Warehouse에서 실행
 | 갱신 주체 | **Snowflake** (자동) | **사용자** (dbt, INSERT 등) |
 | 추가 비용 | 컴퓨팅 비용 발생 | 없음 |
 | 적합한 경우 | 실시간 피처 파이프라인 | 이미 가공된 테이블 등록 |
-| 이 데모에서 | `CUSTOMER_ORDER_STATS` | `CUSTOMER_FEATURES_FV` |
+| 이 데모에서 | `CUSTOMER_LTV_FEATURES` | `CUSTOMER_FEATURES_FV` |
 
 ```python
 fs = FeatureStore(session=session, database="DEMO", name="ML_DEMO",
@@ -125,9 +125,9 @@ fs = FeatureStore(session=session, database="DEMO", name="ML_DEMO",
 customer_entity = Entity(name="CUSTOMER", join_keys=["C_CUSTKEY"])
 fs.register_entity(customer_entity)
 
-fv = FeatureView(name="customer_order_stats", entities=[customer_entity],
-                 feature_df=feature_df, refresh_freq="1 day")
-fs.register_feature_view(feature_view=fv, version="1")
+fv = FeatureView(name="customer_ltv_features", entities=[customer_entity],
+                 feature_df=inference_features_df, refresh_freq="1 hour")
+fs.register_feature_view(feature_view=fv, version="1", overwrite=True)
 ```
 
 ---
