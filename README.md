@@ -97,6 +97,25 @@ pipeline.fit(train_df)  # Warehouse에서 실행
 - **Feature View**: Entity에 대한 피처 집합 (Static / Managed)
 - **포인트-인-타임**: 각 샘플의 기준 시점 이전 데이터만으로 피처 계산 → Data Leakage 방지
 
+### Snowflake 객체 매핑
+
+| Feature Store 개념 | 실제 Snowflake 객체 | 설명 |
+|---|---|---|
+| Feature Store | Schema | 피처를 담는 스키마 |
+| Entity | Tag | 피처의 기준 키 정의 (예: C_CUSTKEY) |
+| Managed Feature View | Dynamic Table | Snowflake가 `refresh_freq`에 따라 자동 갱신 |
+| External Feature View | View | 기존 테이블을 참조만 (사용자가 직접 관리) |
+
+### Managed vs External Feature View
+
+| 구분 | Managed Feature View | External Feature View |
+|---|---|---|
+| 내부 구현 | Dynamic Table | View |
+| 갱신 주체 | **Snowflake** (자동) | **사용자** (dbt, INSERT 등) |
+| 추가 비용 | 컴퓨팅 비용 발생 | 없음 |
+| 적합한 경우 | 실시간 피처 파이프라인 | 이미 가공된 테이블 등록 |
+| 이 데모에서 | `CUSTOMER_ORDER_STATS` | `CUSTOMER_FEATURES_FV` |
+
 ```python
 fs = FeatureStore(session=session, database="DEMO", name="ML_DEMO",
                   default_warehouse="COMPUTE_WH",
