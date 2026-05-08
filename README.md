@@ -105,17 +105,10 @@ pipeline.fit(train_df)  # Warehouse에서 실행
 | Feature Store | Schema | 피처를 담는 스키마 |
 | Entity | Tag | 피처의 기준 키 정의 (예: C_CUSTKEY) |
 | Managed Feature View | Dynamic Table | Snowflake가 `refresh_freq`에 따라 자동 갱신 |
-| External Feature View | View | 기존 테이블을 참조만 (사용자가 직접 관리) |
 
-### Managed vs External Feature View
+### 이 데모의 Managed Feature View
 
-| 구분 | Managed Feature View | External Feature View |
-|---|---|---|
-| 내부 구현 | Dynamic Table | View |
-| 갱신 주체 | **Snowflake** (자동) | **사용자** (dbt, INSERT 등) |
-| 추가 비용 | 컴퓨팅 비용 발생 | 없음 |
-| 적합한 경우 | 실시간 피처 파이프라인 | 이미 가공된 테이블 등록 |
-| 이 데모에서 | `CUSTOMER_LTV_FEATURES` | `CUSTOMER_FEATURES_FV` |
+`CUSTOMER_LTV_FEATURES`: ORDERS + LINEITEM + CUSTOMER를 조인하여 9개 피처를 1시간마다 자동 갱신하는 Dynamic Table. 추론 DT(`LIVE_PREDICTED_LTVS`)가 이 피처를 참조하여 자동 재추론합니다.
 
 ```python
 fs = FeatureStore(session=session, database="DEMO", name="ML_DEMO",
