@@ -154,6 +154,29 @@ LIVE_PREDICTED_LTVS (추론 DT — 피처 변경 시 자동 재추론)
 
 ---
 
+## Snowflake ML 핵심 개념 용어집
+
+| 개념 | 설명 |
+|------|------|
+| **Feature Store** | ML 피처를 중앙에서 정의·관리·재사용하는 저장소 (스키마로 구현) |
+| **Managed Feature View** | `refresh_freq` 설정 시 Dynamic Table로 자동 갱신되는 Feature View |
+| **External Feature View** | `refresh_freq=None`으로 등록. 기존 테이블을 View로 래핑 (수동 관리) |
+| **Entity** | 피처의 기준 키 (예: C_CUSTKEY). Tag로 구현 |
+| **Dataset** | 불변 학습 데이터 스냅샷. Parquet 저장, 재현성 보장 |
+| **Point-in-Time JOIN** | `timestamp_col` + Spine의 `EVENT_TIMESTAMP`로 ASOF JOIN. Data Leakage 방지 |
+| **Experiment Tracking** | 실험별 파라미터·메트릭을 기록하고 Snowsight에서 비교 |
+| **Model Registry** | 모델 버전 관리, Champion/Challenger 태그, RBAC 거버넌스 |
+| **Pipeline** | 전처리(Encoder, Scaler) + 모델을 하나로 묶은 Snowflake ML 객체 |
+| **ML Jobs (`@remote`)** | Python 함수를 Compute Pool(CPU/GPU)에서 원격 실행 |
+| **Compute Pool** | Snowflake 관리형 컨테이너 클러스터. GPU 지원, 자동 스케일 |
+| **Task Graph (DAG)** | 네이티브 파이프라인 오케스트레이션. 스케줄 + 의존성 관리 |
+| **Dynamic Table** | 소스 변경 시 자동 재계산. Managed FV와 추론 DT의 내부 구현 |
+| **SPCS** | Snowpark Container Services. 모델을 REST API로 배포 (ms 응답) |
+| **Model Monitor** | 성능/드리프트 지표를 자동 계산하는 모니터링 객체 |
+| **PSI** | Population Stability Index. 피처 분포 변화 감지 지표 |
+
+---
+
 ## 자주 묻는 질문 (FAQ)
 
 **Q. PyTorch, TensorFlow도 Snowflake에서 가능한가요?**  
