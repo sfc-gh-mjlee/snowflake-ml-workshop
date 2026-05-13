@@ -108,7 +108,7 @@ df = training_ds.read.to_snowpark_dataframe()
 
 | 방식 | API | 응답시간 | 적합 사례 |
 |------|-----|----------|-----------|
-| SQL Batch | `mv.run()` | 초~분 | 일별 전체 스코어링 |
+| Python Batch | `mv.run()` | 초~분 | 일별 전체 스코어링 |
 | Dynamic Table 체인 | Managed FV → 추론 DT | 분~시간 | 자동 갱신 파이프라인 |
 | Large-scale Batch | `mv.run_batch()` | 분~시간 | 수백만 건 처리 |
 | Real-time (SPCS) | `mv.create_service()` | 밀리초 | 이벤트 기반 즉시 응답 |
